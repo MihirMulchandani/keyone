@@ -12,10 +12,6 @@
   --accent: #ffffff;
 }
 
-@theme inline {
-  --font-sans: var(--font-inter);
-}
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -44,11 +40,9 @@ body {
 ::-webkit-scrollbar {
   width: 4px;
 }
-
 ::-webkit-scrollbar-track {
   background: #000000;
 }
-
 ::-webkit-scrollbar-thumb {
   background: #1f1f1f;
 }
