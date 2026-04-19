@@ -44,7 +44,7 @@ export default function FriendsPage() {
       <h1 className="section-border pb-3 text-base font-medium">friends</h1>
       <section>
         <h2 className="section-border pb-2 text-sm font-medium">requests</h2>
-        {requests.length === 0 ? <p className="py-4 text-sm text-[var(--text-secondary)]">no requests.</p> : null}
+        {requests.length === 0 ? <p className="py-4 text-sm text-[#cccccc]">no requests.</p> : null}
         {requests.map((row) => (
           <div key={row.id} className="section-border flex items-center justify-between py-3">
             <span>{row.requester?.username ?? row.requester_id}</span>
@@ -71,7 +71,7 @@ export default function FriendsPage() {
       </section>
       <section>
         <h2 className="section-border pb-2 text-sm font-medium">friends</h2>
-        {friends.length === 0 ? <p className="py-4 text-sm text-[var(--text-secondary)]">no friends.</p> : null}
+        {friends.length === 0 ? <p className="py-4 text-sm text-[#cccccc]">no friends.</p> : null}
         {friends.map((row) => {
           const username =
             row.requester_id === userId ? row.addressee?.username ?? row.addressee_id : row.requester?.username ?? row.requester_id;

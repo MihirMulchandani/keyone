@@ -86,7 +86,7 @@ export default function InboxPage() {
         <h1 className="section-border pb-3 text-base font-medium">message</h1>
         <p className="font-mono text-sm">FROM: {opened.sender_id}</p>
         <p className="font-mono text-sm">MODE: {opened.delete_mode}</p>
-        <div className="border-y border-[var(--border)] py-4 font-mono whitespace-pre-wrap">{decrypted}</div>
+        <div className="border-y border-[#444444] py-4 font-mono whitespace-pre-wrap">{decrypted}</div>
         {countdown !== null ? <p className="text-xs">deletes in {countdown}s</p> : null}
         <p className="text-sm">This message will self-destruct when you leave this view.</p>
         <button className="text-sm underline" onClick={() => void destroyMessage(opened, "manual")}>
@@ -99,7 +99,7 @@ export default function InboxPage() {
   return (
     <div>
       <h1 className="section-border pb-3 text-base font-medium">inbox</h1>
-      {rows.length === 0 ? <p className="py-6 text-sm text-[var(--text-secondary)]">no messages.</p> : null}
+      {rows.length === 0 ? <p className="py-6 text-sm text-[#cccccc]">no messages.</p> : null}
       {rows.map((message) => (
         <button
           key={message.id}
@@ -121,9 +121,7 @@ export default function InboxPage() {
           }}
         >
           <span className="font-mono text-sm">{message.sender_id.slice(0, 8)}</span>
-          <span className="text-xs text-[var(--text-secondary)]">
-            {new Date(message.created_at).toLocaleTimeString()}
-          </span>
+          <span className="text-xs text-[#cccccc]">{new Date(message.created_at).toLocaleTimeString()}</span>
         </button>
       ))}
       {error ? <pre className="mt-4 whitespace-pre-wrap text-sm">{error}</pre> : null}

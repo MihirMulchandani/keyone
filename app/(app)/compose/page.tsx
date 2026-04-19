@@ -94,8 +94,8 @@ export default function ComposePage() {
     <div className="space-y-6">
       <h1 className="section-border pb-3 text-base font-medium">compose</h1>
       <div className="space-y-2">
-        <p className="text-xs text-[var(--text-secondary)]">recipients (up to 20)</p>
-        <div className="max-h-40 space-y-1 overflow-y-auto border border-[var(--border)] p-3">
+        <p className="text-xs text-[#cccccc]">recipients (up to 20)</p>
+        <div className="max-h-40 space-y-1 overflow-y-auto border border-[#444444] bg-black p-3">
           {friends.map((friend) => (
             <label key={friend.id} className="flex min-h-8 items-center gap-2 text-sm">
               <input
@@ -112,7 +112,7 @@ export default function ComposePage() {
         </div>
       </div>
       <Textarea rows={8} maxLength={5000} value={content} onChange={(e) => setContent(e.target.value)} />
-      <div className="space-y-2 border border-[var(--border)] p-3 text-sm">
+      <div className="space-y-2 border border-[#444444] bg-black p-3 text-sm">
         <label className="block">
           <input type="radio" checked={mode === "view_once"} onChange={() => setMode("view_once")} /> view once
         </label>
@@ -127,7 +127,7 @@ export default function ComposePage() {
         </label>
         {(mode === "timed" || mode === "hybrid") && (
           <input
-            className="mt-1 w-full border border-[var(--border)] bg-transparent px-3 py-2"
+            className="mt-1 w-full border border-[#444444] bg-black px-3 py-2 text-white outline-none focus:border-white"
             type="number"
             min={60}
             max={604800}

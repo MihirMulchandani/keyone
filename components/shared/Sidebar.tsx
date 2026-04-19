@@ -15,7 +15,7 @@ export function Sidebar({ pendingRequests = 0 }: { pendingRequests?: number }) {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed left-0 top-0 hidden h-screen w-[220px] border-r border-[var(--border)] bg-black md:block">
+    <aside className="fixed left-0 top-0 hidden h-screen w-[220px] border-r border-[#444444] bg-black md:block">
       <nav className="p-5">
         <Link
           href="/"

@@ -46,7 +46,7 @@ export default function SettingsPage() {
         />
         allow others to find me by username
       </label>
-      <div className="space-y-3 border border-[var(--border)] p-3">
+      <div className="space-y-3 border border-[#444444] bg-black p-3">
         <Button
           onClick={async () => {
             const pk = await loadPrivateKey();
@@ -60,7 +60,7 @@ export default function SettingsPage() {
           Generating a new key pair will permanently lock you out of all existing messages. This cannot be undone.
         </p>
         <input
-          className="w-full border border-[var(--border)] bg-transparent px-3 py-2"
+          className="w-full border border-[#444444] bg-black px-3 py-2 text-white outline-none focus:border-white"
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
           placeholder="type confirmation text"
@@ -75,7 +75,7 @@ export default function SettingsPage() {
           generate new key pair
         </Button>
       </div>
-      <div className="space-y-3 border border-[var(--border)] p-3">
+      <div className="space-y-3 border border-[#444444] bg-black p-3">
         <Button
           onClick={async () => {
             await supabase.auth.signOut();
@@ -87,11 +87,9 @@ export default function SettingsPage() {
           logout
         </Button>
         <p className="text-sm">delete account and wipe all account-linked data.</p>
-        <p className="text-xs text-[var(--text-secondary)]">
-          type DELETE ACCOUNT to continue.
-        </p>
+        <p className="text-xs text-[#cccccc]">type DELETE ACCOUNT to continue.</p>
         <input
-          className="w-full border border-[var(--border)] bg-transparent px-3 py-2"
+          className="w-full border border-[#444444] bg-black px-3 py-2 text-white outline-none focus:border-white"
           value={deleteConfirm}
           onChange={(e) => setDeleteConfirm(e.target.value)}
           placeholder="DELETE ACCOUNT"

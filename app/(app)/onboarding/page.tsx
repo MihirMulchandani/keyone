@@ -68,7 +68,7 @@ export default function OnboardingPage() {
       <div className="space-y-4">
         <h1 className="text-base font-medium">onboarding</h1>
         <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="username" />
-        <p className="text-xs text-[var(--text-secondary)]">
+        <p className="text-xs text-[#cccccc]">
           {checking ? "checking username..." : usernameAvailable === false ? "username is taken." : ""}
         </p>
         <Button onClick={start}>continue</Button>
@@ -104,7 +104,7 @@ export default function OnboardingPage() {
           >
             export backup key
           </Button>
-          <button className="text-xs text-[var(--text-secondary)]" onClick={() => setStep(4)}>
+          <button className="text-xs text-[#cccccc]" onClick={() => setStep(4)}>
             skip (not recommended)
           </button>
         </div>

@@ -47,7 +47,7 @@ export function KeyNotFoundOverlay({ userId }: { userId: string }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black p-6">
       <div className="w-full max-w-md space-y-4">
         <p className="text-lg">no private key found.</p>
-        <p className="text-[var(--text-secondary)]">
+        <p className="text-[#cccccc]">
           Your private key is stored on this device only.
           <br />
           It was not found in this browser.

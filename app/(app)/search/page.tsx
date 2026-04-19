@@ -63,7 +63,7 @@ export default function SearchPage() {
         ))}
       </ul>
       {results.length === 0 && q.length >= 2 ? (
-        <p className="text-sm text-[var(--text-secondary)]">no more results found.</p>
+        <p className="text-sm text-[#cccccc]">no more results found.</p>
       ) : null}
       {status ? <p className="text-sm">{status}</p> : null}
     </div>
