@@ -78,20 +78,30 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }, [userId]);
 
   return (
-    <div className="min-h-screen bg-black">
-      <Sidebar pendingRequests={pendingRequests} />
-      <header className="sticky top-0 z-20 border-b border-[#444444] bg-black px-5 py-3 md:hidden">
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-white">KeyOne</span>
-          {pendingRequests > 0 ? (
-            <span className="text-xs text-[#cccccc]">friends [new:{pendingRequests}]</span>
-          ) : null}
+    <div className="min-h-screen bg-black text-white">
+      <div className="flex min-h-screen flex-col md:flex-row">
+        <Sidebar pendingRequests={pendingRequests} />
+
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+          <header className="sticky top-0 z-20 border-b border-[#444444] bg-black px-5 py-3 md:hidden">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-white">KeyOne</span>
+              {pendingRequests > 0 ? (
+                <span className="text-xs text-[#cccccc]">friends [new:{pendingRequests}]</span>
+              ) : null}
+            </div>
+          </header>
+
+          <main className="min-h-0 flex-1 px-5 py-6 pb-16 md:px-6 md:py-6 md:pb-6">
+            <div className="w-full max-w-[720px]">{children}</div>
+          </main>
+
+          <div className="md:hidden">
+            <MobileNav pendingRequests={pendingRequests} />
+          </div>
         </div>
-      </header>
-      <main className="pb-[56px] md:ml-[220px] md:pb-0">
-        <div className="mx-auto w-full max-w-[760px] px-5 py-6 md:p-6">{children}</div>
-      </main>
-      <MobileNav pendingRequests={pendingRequests} />
+      </div>
+
       {showMissingKey && userId ? <KeyNotFoundOverlay userId={userId} /> : null}
     </div>
   );
