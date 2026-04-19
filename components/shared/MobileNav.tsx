@@ -7,6 +7,7 @@ const items = [
   { href: "/inbox", label: "inbox" },
   { href: "/compose", label: "compose" },
   { href: "/friends", label: "friends", key: "friends" },
+  { href: "/search", label: "search" },
   { href: "/settings", label: "settings" },
 ];
 
@@ -14,7 +15,7 @@ export function MobileNav({ pendingRequests = 0 }: { pendingRequests?: number })
   const pathname = usePathname();
   return (
     <nav className="fixed bottom-0 left-0 right-0 border-t border-[var(--border)] bg-black md:hidden">
-      <ul className="grid grid-cols-4">
+      <ul className="grid grid-cols-5">
         {items.map((item) => (
           <li key={item.href}>
             <Link

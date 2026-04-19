@@ -17,7 +17,12 @@ export function Sidebar({ pendingRequests = 0 }: { pendingRequests?: number }) {
   return (
     <aside className="hidden w-[220px] border-r border-[var(--border)] md:block">
       <nav className="p-4">
-        <div className="mb-6 text-sm font-medium">KeyOne</div>
+        <Link
+          href="/"
+          className="mb-6 block rounded-[2px] border border-transparent px-2 py-1 text-sm font-medium transition-colors hover:border-white hover:bg-white hover:text-black"
+        >
+          KeyOne
+        </Link>
         <ul className="space-y-1">
           {items.map((item) => {
             const active = pathname === item.href;

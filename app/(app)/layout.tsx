@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Sidebar } from "@/components/shared/Sidebar";
 import { MobileNav } from "@/components/shared/MobileNav";
 import { KeyNotFoundOverlay } from "@/components/shared/KeyNotFoundOverlay";
@@ -37,6 +38,44 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     };
     void run();
   }, [pathname, router]);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    if (typeof window !== "undefined" && "Notification" in window) {
+      if (Notification.permission === "default") {
+        void Notification.requestPermission();
+      }
+    }
+
+    const channel = supabase
+      .channel(`global-message-notify-${userId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+          filter: `receiver_id=eq.${userId}`,
+        },
+        () => {
+          toast("new message received.");
+          if (typeof window !== "undefined" && "Notification" in window) {
+            if (Notification.permission === "granted") {
+              const notification = new Notification("KeyOne", {
+                body: "you received a new message.",
+              });
+              notification.onclick = () => window.focus();
+            }
+          }
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [userId]);
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[1200px]">
