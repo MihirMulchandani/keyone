@@ -12,6 +12,8 @@ export default function SettingsPage() {
   const [searchable, setSearchable] = useState(true);
   const [userId, setUserId] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [deleteConfirm, setDeleteConfirm] = useState("");
+  const [notice, setNotice] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -30,7 +32,7 @@ export default function SettingsPage() {
   }, []);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <h1 className="section-border pb-3 text-base font-medium">settings</h1>
       <label className="flex items-center gap-2 text-sm">
         <input
@@ -85,6 +87,35 @@ export default function SettingsPage() {
       >
         logout
       </Button>
+      <div className="space-y-2 border border-white p-3">
+        <p className="text-sm">delete account and wipe all account-linked data.</p>
+        <p className="text-xs text-[var(--text-secondary)]">
+          type DELETE ACCOUNT to continue.
+        </p>
+        <input
+          className="w-full border border-[var(--border)] bg-transparent p-2"
+          value={deleteConfirm}
+          onChange={(e) => setDeleteConfirm(e.target.value)}
+          placeholder="DELETE ACCOUNT"
+        />
+        <Button
+          disabled={deleteConfirm !== "DELETE ACCOUNT"}
+          onClick={async () => {
+            setNotice("");
+            const { error } = await supabase.from("users").delete().eq("id", userId);
+            if (error) {
+              setNotice("unable to delete account.");
+              return;
+            }
+            await supabase.auth.signOut();
+            await clearKeys();
+            router.replace("/login");
+          }}
+        >
+          delete account
+        </Button>
+      </div>
+      {notice ? <p className="text-sm">{notice}</p> : null}
     </div>
   );
 }

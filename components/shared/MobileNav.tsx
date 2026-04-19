@@ -6,11 +6,11 @@ import { usePathname } from "next/navigation";
 const items = [
   { href: "/inbox", label: "inbox" },
   { href: "/compose", label: "compose" },
-  { href: "/friends", label: "friends" },
+  { href: "/friends", label: "friends", key: "friends" },
   { href: "/settings", label: "settings" },
 ];
 
-export function MobileNav() {
+export function MobileNav({ pendingRequests = 0 }: { pendingRequests?: number }) {
   const pathname = usePathname();
   return (
     <nav className="fixed bottom-0 left-0 right-0 border-t border-[var(--border)] bg-black md:hidden">
@@ -22,6 +22,9 @@ export function MobileNav() {
               className={`flex min-h-11 items-center justify-center text-xs ${pathname === item.href ? "text-white" : "text-[var(--text-secondary)]"}`}
             >
               {item.label}
+              {"key" in item && item.key === "friends" && pendingRequests > 0
+                ? ` [${pendingRequests}]`
+                : ""}
             </Link>
           </li>
         ))}

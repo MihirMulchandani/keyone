@@ -6,12 +6,12 @@ import { usePathname } from "next/navigation";
 const items = [
   { href: "/inbox", label: "inbox" },
   { href: "/compose", label: "compose" },
-  { href: "/friends", label: "friends" },
+  { href: "/friends", label: "friends", key: "friends" },
   { href: "/search", label: "search" },
   { href: "/settings", label: "settings" },
 ];
 
-export function Sidebar() {
+export function Sidebar({ pendingRequests = 0 }: { pendingRequests?: number }) {
   const pathname = usePathname();
 
   return (
@@ -28,6 +28,9 @@ export function Sidebar() {
                   href={item.href}
                 >
                   {item.label}
+                  {"key" in item && item.key === "friends" && pendingRequests > 0
+                    ? ` [new:${pendingRequests}]`
+                    : ""}
                 </Link>
               </li>
             );

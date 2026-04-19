@@ -14,6 +14,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [userId, setUserId] = useState<string | null>(null);
   const [showMissingKey, setShowMissingKey] = useState(false);
+  const [pendingRequests, setPendingRequests] = useState(0);
 
   useEffect(() => {
     const run = async () => {
@@ -27,17 +28,23 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       await trackEvent(user.id, "auth_login", {});
       const key = await loadPrivateKey();
       setShowMissingKey(!key && pathname !== "/onboarding");
+      const { count } = await supabase
+        .from("friends")
+        .select("id", { count: "exact", head: true })
+        .eq("addressee_id", user.id)
+        .eq("status", "pending");
+      setPendingRequests(count ?? 0);
     };
     void run();
   }, [pathname, router]);
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[1200px]">
-      <Sidebar />
+      <Sidebar pendingRequests={pendingRequests} />
       <main className="w-full pb-14 md:pb-0">
-        <div className="mx-auto w-full max-w-[720px] p-4">{children}</div>
+        <div className="mx-auto w-full max-w-[760px] p-6 md:p-8">{children}</div>
       </main>
-      <MobileNav />
+      <MobileNav pendingRequests={pendingRequests} />
       {showMissingKey && userId ? <KeyNotFoundOverlay userId={userId} /> : null}
     </div>
   );
