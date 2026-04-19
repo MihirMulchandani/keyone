@@ -1,9 +1,23 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { supabase } from "@/lib/supabase/client";
 
 export default function LoginPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const run = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data.user) {
+        router.replace("/");
+      }
+    };
+    void run();
+  }, [router]);
+
   return (
     <main className="flex min-h-screen items-center justify-center px-6">
       <div className="w-full max-w-[320px] space-y-4">
