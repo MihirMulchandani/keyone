@@ -82,13 +82,14 @@ export default function InboxPage() {
 
   if (opened) {
     return (
-      <motion.div initial={{ opacity: 0, y: 2 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.1 }}>
-        <p className="font-mono">FROM: {opened.sender_id}</p>
-        <p className="font-mono">MODE: {opened.delete_mode}</p>
-        <div className="my-3 border-y border-[var(--border)] py-3 font-mono whitespace-pre-wrap">{decrypted}</div>
+      <motion.div initial={{ opacity: 0, y: 2 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.1 }} className="space-y-3">
+        <h1 className="section-border pb-3 text-base font-medium">message</h1>
+        <p className="font-mono text-sm">FROM: {opened.sender_id}</p>
+        <p className="font-mono text-sm">MODE: {opened.delete_mode}</p>
+        <div className="border-y border-[var(--border)] py-4 font-mono whitespace-pre-wrap">{decrypted}</div>
         {countdown !== null ? <p className="text-xs">deletes in {countdown}s</p> : null}
-        <p className="mt-2 text-sm">This message will self-destruct when you leave this view.</p>
-        <button className="mt-3 underline" onClick={() => void destroyMessage(opened, "manual")}>
+        <p className="text-sm">This message will self-destruct when you leave this view.</p>
+        <button className="text-sm underline" onClick={() => void destroyMessage(opened, "manual")}>
           destroy now
         </button>
       </motion.div>
@@ -98,11 +99,11 @@ export default function InboxPage() {
   return (
     <div>
       <h1 className="section-border pb-3 text-base font-medium">inbox</h1>
-      {rows.length === 0 ? <p className="pt-4 text-sm">no messages.</p> : null}
+      {rows.length === 0 ? <p className="py-6 text-sm text-[var(--text-secondary)]">no messages.</p> : null}
       {rows.map((message) => (
         <button
           key={message.id}
-          className="section-border flex w-full items-center justify-between py-3 text-left opacity-70 transition-opacity hover:opacity-100"
+          className="section-border flex w-full items-center justify-between py-4 text-left transition-colors hover:bg-[var(--bg-hover)]"
           onClick={async () => {
             try {
               const plaintext = await decryptMessage(message);
@@ -119,8 +120,10 @@ export default function InboxPage() {
             }
           }}
         >
-          <span className="font-mono">{message.sender_id.slice(0, 8)}</span>
-          <span className="text-xs text-[var(--text-secondary)]">{new Date(message.created_at).toLocaleTimeString()}</span>
+          <span className="font-mono text-sm">{message.sender_id.slice(0, 8)}</span>
+          <span className="text-xs text-[var(--text-secondary)]">
+            {new Date(message.created_at).toLocaleTimeString()}
+          </span>
         </button>
       ))}
       {error ? <pre className="mt-4 whitespace-pre-wrap text-sm">{error}</pre> : null}

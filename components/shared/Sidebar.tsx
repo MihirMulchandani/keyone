@@ -15,15 +15,15 @@ export function Sidebar({ pendingRequests = 0 }: { pendingRequests?: number }) {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-[220px] border-r border-[var(--border)] md:block">
-      <nav className="p-4">
+    <aside className="fixed left-0 top-0 hidden h-screen w-[220px] border-r border-[var(--border)] bg-black md:block">
+      <nav className="p-5">
         <Link
           href="/"
-          className="mb-6 block rounded-[2px] border border-transparent px-2 py-1 text-sm font-medium transition-colors hover:border-white hover:bg-white hover:text-black"
+          className="mb-8 block rounded-[2px] border border-transparent px-2 py-1 text-base font-medium transition-colors hover:border-white hover:bg-white hover:text-black"
         >
           KeyOne
         </Link>
-        <ul className="space-y-1">
+        <ul className="space-y-2">
           {items.map((item) => {
             const active = pathname === item.href;
             return (

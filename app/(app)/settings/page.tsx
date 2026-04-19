@@ -32,9 +32,9 @@ export default function SettingsPage() {
   }, []);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <h1 className="section-border pb-3 text-base font-medium">settings</h1>
-      <label className="flex items-center gap-2 text-sm">
+      <label className="section-border flex min-h-12 items-center gap-2 pb-3 text-sm">
         <input
           type="checkbox"
           checked={searchable}
@@ -46,7 +46,7 @@ export default function SettingsPage() {
         />
         allow others to find me by username
       </label>
-      <div className="space-y-2">
+      <div className="space-y-3 border border-[var(--border)] p-3">
         <Button
           onClick={async () => {
             const pk = await loadPrivateKey();
@@ -56,13 +56,11 @@ export default function SettingsPage() {
         >
           export key backup
         </Button>
-      </div>
-      <div className="space-y-2 border border-white p-2">
         <p className="text-sm">
           Generating a new key pair will permanently lock you out of all existing messages. This cannot be undone.
         </p>
         <input
-          className="w-full border border-[var(--border)] bg-transparent p-2"
+          className="w-full border border-[var(--border)] bg-transparent px-3 py-2"
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
           placeholder="type confirmation text"
@@ -77,23 +75,23 @@ export default function SettingsPage() {
           generate new key pair
         </Button>
       </div>
-      <Button
-        onClick={async () => {
-          await supabase.auth.signOut();
-          await clearKeys();
-          await trackEvent(userId, "auth_logout", {});
-          router.replace("/login");
-        }}
-      >
-        logout
-      </Button>
-      <div className="space-y-2 border border-white p-3">
+      <div className="space-y-3 border border-[var(--border)] p-3">
+        <Button
+          onClick={async () => {
+            await supabase.auth.signOut();
+            await clearKeys();
+            await trackEvent(userId, "auth_logout", {});
+            router.replace("/login");
+          }}
+        >
+          logout
+        </Button>
         <p className="text-sm">delete account and wipe all account-linked data.</p>
         <p className="text-xs text-[var(--text-secondary)]">
           type DELETE ACCOUNT to continue.
         </p>
         <input
-          className="w-full border border-[var(--border)] bg-transparent p-2"
+          className="w-full border border-[var(--border)] bg-transparent px-3 py-2"
           value={deleteConfirm}
           onChange={(e) => setDeleteConfirm(e.target.value)}
           placeholder="DELETE ACCOUNT"

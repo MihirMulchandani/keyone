@@ -38,12 +38,12 @@ export default function SearchPage() {
   }, [q, userId]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <h1 className="section-border pb-3 text-base font-medium">search</h1>
-      <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="search username" />
+      <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="search by username..." />
       <ul>
         {results.map((item) => (
-          <li key={item.id} className="section-border flex items-center justify-between py-2">
+          <li key={item.id} className="section-border flex items-center justify-between py-3">
             <span>{item.username}</span>
             <Button
               onClick={async () => {
@@ -62,7 +62,10 @@ export default function SearchPage() {
           </li>
         ))}
       </ul>
-      {status ? <p>{status}</p> : null}
+      {results.length === 0 && q.length >= 2 ? (
+        <p className="text-sm text-[var(--text-secondary)]">no more results found.</p>
+      ) : null}
+      {status ? <p className="text-sm">{status}</p> : null}
     </div>
   );
 }

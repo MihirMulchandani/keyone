@@ -41,10 +41,12 @@ export default function FriendsPage() {
 
   return (
     <div className="space-y-8">
+      <h1 className="section-border pb-3 text-base font-medium">friends</h1>
       <section>
-        <h2 className="section-border pb-2 text-sm">requests</h2>
+        <h2 className="section-border pb-2 text-sm font-medium">requests</h2>
+        {requests.length === 0 ? <p className="py-4 text-sm text-[var(--text-secondary)]">no requests.</p> : null}
         {requests.map((row) => (
-          <div key={row.id} className="section-border flex items-center justify-between py-2">
+          <div key={row.id} className="section-border flex items-center justify-between py-3">
             <span>{row.requester?.username ?? row.requester_id}</span>
             <div className="flex gap-2">
               <Button
@@ -68,12 +70,13 @@ export default function FriendsPage() {
         ))}
       </section>
       <section>
-        <h2 className="section-border pb-2 text-sm">friends</h2>
+        <h2 className="section-border pb-2 text-sm font-medium">friends</h2>
+        {friends.length === 0 ? <p className="py-4 text-sm text-[var(--text-secondary)]">no friends.</p> : null}
         {friends.map((row) => {
           const username =
             row.requester_id === userId ? row.addressee?.username ?? row.addressee_id : row.requester?.username ?? row.requester_id;
           return (
-            <div key={row.id} className="section-border flex items-center justify-between py-2">
+            <div key={row.id} className="section-border flex items-center justify-between py-3">
               <span>{username}</span>
               <Link className="text-sm underline" href="/compose">
                 message
