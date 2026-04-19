@@ -45,18 +45,18 @@ export function KeyNotFoundOverlay({ userId }: { userId: string }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black p-6">
-      <div className="w-full max-w-md space-y-4">
-        <p className="text-lg">no private key found.</p>
-        <p className="text-[#cccccc]">
+      <div className="page w-full max-w-[560px]">
+        <p className="text-[20px] font-medium leading-snug">no private key found.</p>
+        <p className="text-[15px] leading-relaxed text-[#cccccc]">
           Your private key is stored on this device only.
           <br />
           It was not found in this browser.
         </p>
-        <div className="flex gap-3">
-          <Button onClick={() => fileRef.current?.click()} loading={loading}>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <Button className="w-full sm:w-auto" onClick={() => fileRef.current?.click()} loading={loading}>
             import key file
           </Button>
-          <Button className="border-white" onClick={onGenerate} loading={loading}>
+          <Button className="w-full border-white sm:w-auto" onClick={onGenerate} loading={loading}>
             generate new key pair
           </Button>
         </div>
@@ -70,10 +70,10 @@ export function KeyNotFoundOverlay({ userId }: { userId: string }) {
             if (file) void onImport(file);
           }}
         />
-        <p className="border border-white p-2 text-sm">
+        <p className="border border-[#444444] p-5 text-[15px] leading-relaxed">
           Generating a new key pair will lock you out of all existing messages.
         </p>
-        {error ? <p className="text-sm">{error}</p> : null}
+        {error ? <p className="text-[15px] leading-relaxed">{error}</p> : null}
       </div>
     </div>
   );

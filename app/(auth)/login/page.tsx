@@ -19,10 +19,12 @@ export default function LoginPage() {
   }, [router]);
 
   return (
-    <main className="flex min-h-screen items-center justify-center px-6">
-      <div className="w-full max-w-[320px] space-y-4">
-        <h1 className="text-[18px] font-medium">KeyOne</h1>
-        <p className="text-xs text-[#cccccc]">end-to-end encrypted messaging</p>
+    <main className="flex min-h-screen items-center justify-center px-6 py-10">
+      <div className="w-full max-w-[420px] space-y-8">
+        <div className="space-y-3">
+          <h1 className="text-[22px] font-medium leading-none">KeyOne</h1>
+          <p className="text-[15px] leading-relaxed text-[#cccccc]">end-to-end encrypted messaging</p>
+        </div>
         <Button
           className="w-full border-white"
           onClick={() =>

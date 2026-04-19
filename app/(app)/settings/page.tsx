@@ -32,51 +32,60 @@ export default function SettingsPage() {
   }, []);
 
   return (
-    <div className="space-y-8">
-      <h1 className="section-border pb-3 text-base font-medium">settings</h1>
-      <label className="section-border flex min-h-12 items-center gap-2 pb-3 text-sm">
-        <input
-          type="checkbox"
-          checked={searchable}
-          onChange={async (e) => {
+    <div className="page">
+      <h1 className="page-title">settings</h1>
+
+      <div className="section">
+        <div className="section-title">privacy</div>
+        <label className="flex items-start gap-4 border-b border-[#444444] pb-6 text-[15px] leading-relaxed">
+          <input className="mt-1" type="checkbox" checked={searchable} onChange={async (e) => {
             const next = e.target.checked;
             setSearchable(next);
             await supabase.from("users").update({ is_searchable: next }).eq("id", userId);
-          }}
-        />
-        allow others to find me by username
-      </label>
-      <div className="space-y-3 border border-[#444444] bg-black p-3">
-        <Button
-          onClick={async () => {
-            const pk = await loadPrivateKey();
-            if (pk) await downloadPrivateKeyBackup(pk);
-            await trackEvent(userId, "key_exported", {});
-          }}
-        >
-          export key backup
-        </Button>
-        <p className="text-sm">
-          Generating a new key pair will permanently lock you out of all existing messages. This cannot be undone.
-        </p>
-        <input
-          className="w-full border border-[#444444] bg-black px-3 py-2 text-white outline-none focus:border-white"
-          value={confirm}
-          onChange={(e) => setConfirm(e.target.value)}
-          placeholder="type confirmation text"
-        />
-        <Button
-          disabled={confirm !== "DELETE MY OLD MESSAGES"}
-          onClick={async () => {
-            await clearKeys();
-            router.push("/onboarding");
-          }}
-        >
-          generate new key pair
-        </Button>
+          }} />
+          <span>allow others to find me by username</span>
+        </label>
       </div>
-      <div className="space-y-3 border border-[#444444] bg-black p-3">
+
+      <div className="section">
+        <div className="section-title">keys</div>
+        <div className="space-y-5 border border-[#444444] bg-black p-5">
+          <Button
+            className="w-full sm:w-auto"
+            onClick={async () => {
+              const pk = await loadPrivateKey();
+              if (pk) await downloadPrivateKeyBackup(pk);
+              await trackEvent(userId, "key_exported", {});
+            }}
+          >
+            export key backup
+          </Button>
+          <p className="text-[15px] leading-relaxed">
+            Generating a new key pair will permanently lock you out of all existing messages. This cannot be undone.
+          </p>
+          <input
+            className="w-full border border-[#444444] bg-black px-4 py-3 text-[15px] text-white outline-none focus:border-white"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+            placeholder="type confirmation text"
+          />
+          <Button
+            className="w-full sm:w-auto"
+            disabled={confirm !== "DELETE MY OLD MESSAGES"}
+            onClick={async () => {
+              await clearKeys();
+              router.push("/onboarding");
+            }}
+          >
+            generate new key pair
+          </Button>
+        </div>
+      </div>
+
+      <div className="section">
+        <div className="section-title">session</div>
         <Button
+          className="w-full sm:w-auto"
           onClick={async () => {
             await supabase.auth.signOut();
             await clearKeys();
@@ -86,32 +95,40 @@ export default function SettingsPage() {
         >
           logout
         </Button>
-        <p className="text-sm">delete account and wipe all account-linked data.</p>
-        <p className="text-xs text-[#cccccc]">type DELETE ACCOUNT to continue.</p>
-        <input
-          className="w-full border border-[#444444] bg-black px-3 py-2 text-white outline-none focus:border-white"
-          value={deleteConfirm}
-          onChange={(e) => setDeleteConfirm(e.target.value)}
-          placeholder="DELETE ACCOUNT"
-        />
-        <Button
-          disabled={deleteConfirm !== "DELETE ACCOUNT"}
-          onClick={async () => {
-            setNotice("");
-            const { error } = await supabase.from("users").delete().eq("id", userId);
-            if (error) {
-              setNotice("unable to delete account.");
-              return;
-            }
-            await supabase.auth.signOut();
-            await clearKeys();
-            router.replace("/login");
-          }}
-        >
-          delete account
-        </Button>
       </div>
-      {notice ? <p className="text-sm">{notice}</p> : null}
+
+      <div className="section">
+        <div className="section-title">danger zone</div>
+        <div className="space-y-5 border border-[#444444] bg-black p-5">
+          <p className="text-[15px] leading-relaxed">delete account and wipe all account-linked data.</p>
+          <p className="small muted">type DELETE ACCOUNT to continue.</p>
+          <input
+            className="w-full border border-[#444444] bg-black px-4 py-3 text-[15px] text-white outline-none focus:border-white"
+            value={deleteConfirm}
+            onChange={(e) => setDeleteConfirm(e.target.value)}
+            placeholder="DELETE ACCOUNT"
+          />
+          <Button
+            className="w-full sm:w-auto"
+            disabled={deleteConfirm !== "DELETE ACCOUNT"}
+            onClick={async () => {
+              setNotice("");
+              const { error } = await supabase.from("users").delete().eq("id", userId);
+              if (error) {
+                setNotice("unable to delete account.");
+                return;
+              }
+              await supabase.auth.signOut();
+              await clearKeys();
+              router.replace("/login");
+            }}
+          >
+            delete account
+          </Button>
+        </div>
+      </div>
+
+      {notice ? <p className="text-[15px] leading-relaxed">{notice}</p> : null}
     </div>
   );
 }

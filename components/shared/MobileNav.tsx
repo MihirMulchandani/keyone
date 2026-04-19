@@ -20,7 +20,7 @@ export function MobileNav({ pendingRequests = 0 }: { pendingRequests?: number })
           <li key={item.href}>
             <Link
               href={item.href}
-              className={`flex min-h-[48px] items-center justify-center border-r border-[#444444] text-xs last:border-r-0 ${pathname === item.href ? "text-white" : "text-[#cccccc]"}`}
+              className={`flex min-h-[52px] items-center justify-center border-r border-[#444444] text-[13px] leading-none last:border-r-0 ${pathname === item.href ? "text-white" : "text-[#cccccc]"}`}
             >
               {item.label}
               {"key" in item && item.key === "friends" && pendingRequests > 0

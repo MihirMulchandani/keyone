@@ -91,13 +91,15 @@ export default function ComposePage() {
   };
 
   return (
-    <div className="space-y-6">
-      <h1 className="section-border pb-3 text-base font-medium">compose</h1>
-      <div className="space-y-2">
-        <p className="text-xs text-[#cccccc]">recipients (up to 20)</p>
-        <div className="max-h-40 space-y-1 overflow-y-auto border border-[#444444] bg-black p-3">
+    <div className="page">
+      <h1 className="page-title">compose</h1>
+
+      <div className="section">
+        <div className="section-title">recipients</div>
+        <p className="small muted">select up to 20 accepted friends.</p>
+        <div className="max-h-56 space-y-3 overflow-y-auto border border-[#444444] bg-black p-4">
           {friends.map((friend) => (
-            <label key={friend.id} className="flex min-h-8 items-center gap-2 text-sm">
+            <label key={friend.id} className="flex min-h-[44px] items-center gap-3 text-[15px] leading-none">
               <input
                 type="checkbox"
                 checked={selected.includes(friend.id)}
@@ -111,35 +113,50 @@ export default function ComposePage() {
           ))}
         </div>
       </div>
-      <Textarea rows={8} maxLength={5000} value={content} onChange={(e) => setContent(e.target.value)} />
-      <div className="space-y-2 border border-[#444444] bg-black p-3 text-sm">
-        <label className="block">
-          <input type="radio" checked={mode === "view_once"} onChange={() => setMode("view_once")} /> view once
-        </label>
-        <label className="block">
-          <input type="radio" checked={mode === "timed"} onChange={() => setMode("timed")} /> timed
-        </label>
-        <label className="block">
-          <input type="radio" checked={mode === "hybrid"} onChange={() => setMode("hybrid")} /> view once or timed
-        </label>
-        <label className="block">
-          <input type="radio" checked={mode === "persistent"} onChange={() => setMode("persistent")} /> keep
-        </label>
-        {(mode === "timed" || mode === "hybrid") && (
-          <input
-            className="mt-1 w-full border border-[#444444] bg-black px-3 py-2 text-white outline-none focus:border-white"
-            type="number"
-            min={60}
-            max={604800}
-            value={seconds}
-            onChange={(e) => setSeconds(Math.min(604800, Math.max(60, Number(e.target.value))))}
-          />
-        )}
+
+      <div className="section">
+        <div className="section-title">message</div>
+        <Textarea rows={10} maxLength={5000} value={content} onChange={(e) => setContent(e.target.value)} />
       </div>
-      <Button className="w-full sm:w-auto" loading={loading} onClick={send}>
-        send
-      </Button>
-      {notice ? <p className="text-sm">{notice}</p> : null}
+
+      <div className="section">
+        <div className="section-title">delete mode</div>
+        <div className="space-y-4 border border-[#444444] bg-black p-4 text-[15px] leading-relaxed">
+          <label className="flex items-start gap-3">
+            <input className="mt-1" type="radio" checked={mode === "view_once"} onChange={() => setMode("view_once")} />
+            <span>view once</span>
+          </label>
+          <label className="flex items-start gap-3">
+            <input className="mt-1" type="radio" checked={mode === "timed"} onChange={() => setMode("timed")} />
+            <span>timed</span>
+          </label>
+          <label className="flex items-start gap-3">
+            <input className="mt-1" type="radio" checked={mode === "hybrid"} onChange={() => setMode("hybrid")} />
+            <span>view once or timed</span>
+          </label>
+          <label className="flex items-start gap-3">
+            <input className="mt-1" type="radio" checked={mode === "persistent"} onChange={() => setMode("persistent")} />
+            <span>keep</span>
+          </label>
+          {(mode === "timed" || mode === "hybrid") && (
+            <input
+              className="w-full border border-[#444444] bg-black px-4 py-3 text-[15px] text-white outline-none focus:border-white"
+              type="number"
+              min={60}
+              max={604800}
+              value={seconds}
+              onChange={(e) => setSeconds(Math.min(604800, Math.max(60, Number(e.target.value))))}
+            />
+          )}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+        <Button className="w-full sm:w-auto" loading={loading} onClick={send}>
+          send
+        </Button>
+        {notice ? <p className="text-[15px] leading-relaxed">{notice}</p> : null}
+      </div>
     </div>
   );
 }

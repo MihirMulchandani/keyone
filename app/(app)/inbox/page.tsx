@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
 import { decryptMessage, DecryptionError } from "@/lib/crypto/decrypt";
 import { supabase } from "@/lib/supabase/client";
 import { useRealtime } from "@/lib/hooks/useRealtime";
@@ -82,28 +81,34 @@ export default function InboxPage() {
 
   if (opened) {
     return (
-      <motion.div initial={{ opacity: 0, y: 2 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.1 }} className="space-y-3">
-        <h1 className="section-border pb-3 text-base font-medium">message</h1>
-        <p className="font-mono text-sm">FROM: {opened.sender_id}</p>
-        <p className="font-mono text-sm">MODE: {opened.delete_mode}</p>
-        <div className="border-y border-[#444444] py-4 font-mono whitespace-pre-wrap">{decrypted}</div>
-        {countdown !== null ? <p className="text-xs">deletes in {countdown}s</p> : null}
-        <p className="text-sm">This message will self-destruct when you leave this view.</p>
-        <button className="text-sm underline" onClick={() => void destroyMessage(opened, "manual")}>
-          destroy now
-        </button>
-      </motion.div>
+      <div className="page">
+        <h1 className="page-title">message</h1>
+        <div className="section">
+          <p className="font-mono text-[15px] leading-relaxed">FROM: {opened.sender_id}</p>
+          <p className="font-mono text-[15px] leading-relaxed">MODE: {opened.delete_mode}</p>
+          <div className="border-y border-[#444444] py-6 font-mono text-[15px] leading-relaxed whitespace-pre-wrap">
+            {decrypted}
+          </div>
+          {countdown !== null ? <p className="small muted">deletes in {countdown}s</p> : null}
+          <p className="text-[15px] leading-relaxed">
+            This message will self-destruct when you leave this view.
+          </p>
+          <button className="text-left text-[15px] underline" onClick={() => void destroyMessage(opened, "manual")}>
+            destroy now
+          </button>
+        </div>
+      </div>
     );
   }
 
   return (
-    <div>
-      <h1 className="section-border pb-3 text-base font-medium">inbox</h1>
-      {rows.length === 0 ? <p className="py-6 text-sm text-[#cccccc]">no messages.</p> : null}
+    <div className="page">
+      <h1 className="page-title">inbox</h1>
+      {rows.length === 0 ? <p className="muted py-2 text-[15px]">no messages.</p> : null}
       {rows.map((message) => (
         <button
           key={message.id}
-          className="section-border flex w-full items-center justify-between py-4 text-left transition-colors hover:bg-[var(--bg-hover)]"
+          className="row"
           onClick={async () => {
             try {
               const plaintext = await decryptMessage(message);
@@ -120,11 +125,11 @@ export default function InboxPage() {
             }
           }}
         >
-          <span className="font-mono text-sm">{message.sender_id.slice(0, 8)}</span>
-          <span className="text-xs text-[#cccccc]">{new Date(message.created_at).toLocaleTimeString()}</span>
+          <span className="font-mono text-[15px]">{message.sender_id.slice(0, 8)}</span>
+          <span className="small muted">{new Date(message.created_at).toLocaleTimeString()}</span>
         </button>
       ))}
-      {error ? <pre className="mt-4 whitespace-pre-wrap text-sm">{error}</pre> : null}
+      {error ? <pre className="whitespace-pre-wrap text-[15px] leading-relaxed">{error}</pre> : null}
     </div>
   );
 }

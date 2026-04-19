@@ -65,48 +65,60 @@ export default function OnboardingPage() {
 
   if (step === 1) {
     return (
-      <div className="space-y-4">
-        <h1 className="text-base font-medium">onboarding</h1>
-        <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="username" />
-        <p className="text-xs text-[#cccccc]">
-          {checking ? "checking username..." : usernameAvailable === false ? "username is taken." : ""}
-        </p>
-        <Button onClick={start}>continue</Button>
-        {error ? <p className="text-sm">{error}</p> : null}
+      <div className="page">
+        <h1 className="page-title">onboarding</h1>
+        <div className="section">
+          <div className="section-title">username</div>
+          <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="username" />
+          <p className="small muted">
+            {checking ? "checking username..." : usernameAvailable === false ? "username is taken." : ""}
+          </p>
+          <Button className="w-full sm:w-auto" onClick={start}>
+            continue
+          </Button>
+          {error ? <p className="text-[15px] leading-relaxed">{error}</p> : null}
+        </div>
       </div>
     );
   }
 
   if (step === 2) {
     return (
-      <div className="flex items-center gap-2">
-        <span className="spinner" />
-        <p>generating your key pair...</p>
+      <div className="page">
+        <h1 className="page-title">onboarding</h1>
+        <div className="flex items-center gap-4">
+          <span className="spinner" />
+          <p className="text-[15px] leading-relaxed">generating your key pair...</p>
+        </div>
       </div>
     );
   }
 
   if (step === 3) {
     return (
-      <div className="space-y-4">
-        <p className="border border-white p-2 text-sm">
-          Anyone with this file can read all your messages. Store it offline. Do not share it.
-        </p>
-        <div className="flex gap-3">
-          <Button
-            onClick={async () => {
-              if (privateKey) {
-                await downloadPrivateKeyBackup(privateKey);
-                await trackEvent(userId, "key_exported", {});
-              }
-              setStep(4);
-            }}
-          >
-            export backup key
-          </Button>
-          <button className="text-xs text-[#cccccc]" onClick={() => setStep(4)}>
-            skip (not recommended)
-          </button>
+      <div className="page">
+        <h1 className="page-title">key backup</h1>
+        <div className="section">
+          <p className="border border-[#444444] p-5 text-[15px] leading-relaxed">
+            Anyone with this file can read all your messages. Store it offline. Do not share it.
+          </p>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <Button
+              className="w-full sm:w-auto"
+              onClick={async () => {
+                if (privateKey) {
+                  await downloadPrivateKeyBackup(privateKey);
+                  await trackEvent(userId, "key_exported", {});
+                }
+                setStep(4);
+              }}
+            >
+              export backup key
+            </Button>
+            <button className="text-left text-[15px] text-[#cccccc] underline" onClick={() => setStep(4)}>
+              skip (not recommended)
+            </button>
+          </div>
         </div>
       </div>
     );

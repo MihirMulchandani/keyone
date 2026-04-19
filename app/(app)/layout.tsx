@@ -83,17 +83,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <Sidebar pendingRequests={pendingRequests} />
 
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-20 border-b border-[#444444] bg-black px-5 py-3 md:hidden">
+          <header className="sticky top-0 z-20 border-b border-[#444444] bg-black px-6 py-4 md:hidden">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-white">KeyOne</span>
+              <span className="text-[15px] font-medium leading-none text-white">KeyOne</span>
               {pendingRequests > 0 ? (
-                <span className="text-xs text-[#cccccc]">friends [new:{pendingRequests}]</span>
+                <span className="text-[13px] leading-none text-[#cccccc]">friends [new:{pendingRequests}]</span>
               ) : null}
             </div>
           </header>
 
-          <main className="min-h-0 flex-1 px-5 py-6 pb-16 md:px-6 md:py-6 md:pb-6">
-            <div className="w-full max-w-[720px]">{children}</div>
+          <main className="min-h-0 flex-1 px-6 py-8 pb-24 md:px-8 md:py-8 md:pb-8">
+            <div className="w-full max-w-[860px]">{children}</div>
           </main>
 
           <div className="md:hidden">

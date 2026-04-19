@@ -38,13 +38,20 @@ export default function SearchPage() {
   }, [q, userId]);
 
   return (
-    <div className="space-y-6">
-      <h1 className="section-border pb-3 text-base font-medium">search</h1>
-      <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="search by username..." />
-      <ul>
+    <div className="page">
+      <h1 className="page-title">search</h1>
+
+      <div className="section">
+        <div className="section-title">query</div>
+        <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="search by username..." />
+        <p className="small muted">minimum 2 characters.</p>
+      </div>
+
+      <div className="section">
+        <div className="section-title">results</div>
         {results.map((item) => (
-          <li key={item.id} className="section-border flex items-center justify-between py-3">
-            <span>{item.username}</span>
+          <div key={item.id} className="row">
+            <span className="text-[15px]">{item.username}</span>
             <Button
               onClick={async () => {
                 if (!(await checkRateLimit(userId, "friend_requests"))) {
@@ -59,13 +66,11 @@ export default function SearchPage() {
             >
               add
             </Button>
-          </li>
+          </div>
         ))}
-      </ul>
-      {results.length === 0 && q.length >= 2 ? (
-        <p className="text-sm text-[#cccccc]">no more results found.</p>
-      ) : null}
-      {status ? <p className="text-sm">{status}</p> : null}
+        {results.length === 0 && q.length >= 2 ? <p className="muted text-[15px]">no more results found.</p> : null}
+        {status ? <p className="text-[15px] leading-relaxed">{status}</p> : null}
+      </div>
     </div>
   );
 }

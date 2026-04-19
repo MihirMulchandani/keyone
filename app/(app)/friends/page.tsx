@@ -40,15 +40,16 @@ export default function FriendsPage() {
   const friends = rows.filter((row) => row.status === "accepted");
 
   return (
-    <div className="space-y-8">
-      <h1 className="section-border pb-3 text-base font-medium">friends</h1>
-      <section>
-        <h2 className="section-border pb-2 text-sm font-medium">requests</h2>
-        {requests.length === 0 ? <p className="py-4 text-sm text-[#cccccc]">no requests.</p> : null}
+    <div className="page">
+      <h1 className="page-title">friends</h1>
+
+      <div className="section">
+        <div className="section-title">requests</div>
+        {requests.length === 0 ? <p className="muted text-[15px]">no requests.</p> : null}
         {requests.map((row) => (
-          <div key={row.id} className="section-border flex items-center justify-between py-3">
-            <span>{row.requester?.username ?? row.requester_id}</span>
-            <div className="flex gap-2">
+          <div key={row.id} className="row">
+            <span className="text-[15px]">{row.requester?.username ?? row.requester_id}</span>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button
                 onClick={async () => {
                   await supabase.from("friends").update({ status: "accepted" }).eq("id", row.id);
@@ -68,23 +69,24 @@ export default function FriendsPage() {
             </div>
           </div>
         ))}
-      </section>
-      <section>
-        <h2 className="section-border pb-2 text-sm font-medium">friends</h2>
-        {friends.length === 0 ? <p className="py-4 text-sm text-[#cccccc]">no friends.</p> : null}
+      </div>
+
+      <div className="section">
+        <div className="section-title">friends</div>
+        {friends.length === 0 ? <p className="muted text-[15px]">no friends.</p> : null}
         {friends.map((row) => {
           const username =
             row.requester_id === userId ? row.addressee?.username ?? row.addressee_id : row.requester?.username ?? row.requester_id;
           return (
-            <div key={row.id} className="section-border flex items-center justify-between py-3">
-              <span>{username}</span>
-              <Link className="text-sm underline" href="/compose">
+            <div key={row.id} className="row">
+              <span className="text-[15px]">{username}</span>
+              <Link className="text-[15px] underline" href="/compose">
                 message
               </Link>
             </div>
           );
         })}
-      </section>
+      </div>
     </div>
   );
 }

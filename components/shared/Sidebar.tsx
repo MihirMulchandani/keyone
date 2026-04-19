@@ -19,17 +19,17 @@ export function Sidebar({ pendingRequests = 0 }: { pendingRequests?: number }) {
       <nav className="p-6">
         <Link
           href="/"
-          className="mb-8 block rounded-[2px] border border-transparent px-2 py-1 text-base font-medium transition-colors hover:border-white hover:bg-white hover:text-black"
+          className="mb-10 block rounded-[2px] border border-transparent px-2 py-2 text-lg font-medium leading-none transition-colors hover:border-white hover:bg-white hover:text-black"
         >
           KeyOne
         </Link>
-        <ul className="space-y-2">
+        <ul className="space-y-3">
           {items.map((item) => {
             const active = pathname === item.href;
             return (
               <li key={item.href}>
                 <Link
-                  className={`block rounded-[2px] px-2 py-2 text-sm transition-colors ${active ? "border border-white bg-white text-black" : "border border-transparent text-white hover:border-white hover:bg-white hover:text-black"}`}
+                  className={`block rounded-[2px] px-3 py-3 text-[15px] leading-none transition-colors ${active ? "border border-white bg-white text-black" : "border border-transparent text-white hover:border-white hover:bg-white hover:text-black"}`}
                   href={item.href}
                 >
                   {item.label}
