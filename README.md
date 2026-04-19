@@ -32,4 +32,4 @@ See SECURITY.md for the full threat model.
 
 ## demo
 
-[add your Vercel URL here]
+https://keyone-iota.vercel.app
