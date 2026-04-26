@@ -4,44 +4,55 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const items = [
-  { href: "/inbox", label: "inbox" },
-  { href: "/compose", label: "compose" },
-  { href: "/friends", label: "friends", key: "friends" },
-  { href: "/search", label: "search" },
-  { href: "/settings", label: "settings" },
+  { href: "/inbox", label: "Inbox" },
+  { href: "/compose", label: "Compose" },
+  { href: "/friends", label: "Friends", key: "friends" },
+  { href: "/search", label: "Search" },
+  { href: "/settings", label: "Settings" },
 ];
 
 export function Sidebar({ pendingRequests = 0 }: { pendingRequests?: number }) {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden h-screen w-[220px] shrink-0 border-r border-[#444444] bg-black md:block">
-      <nav className="p-6">
-        <Link
-          href="/"
-          className="mb-10 block rounded-[2px] border border-transparent px-2 py-2 text-lg font-medium leading-none transition-colors hover:border-white hover:bg-white hover:text-black"
-        >
-          KeyOne
+    <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col justify-between border-r border-border bg-sidebar px-6 py-8 md:flex">
+      <div className="space-y-12">
+        <Link href="/inbox" className="block">
+          <h1 className="mb-1 font-serif text-2xl italic tracking-tight text-white">KeyOne</h1>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-text-darker">Secure Communications</p>
         </Link>
-        <ul className="space-y-3">
+
+        <nav className="space-y-6">
           {items.map((item) => {
             const active = pathname === item.href;
             return (
-              <li key={item.href}>
-                <Link
-                  className={`block rounded-[2px] px-3 py-3 text-[15px] leading-none transition-colors ${active ? "border border-white bg-white text-black" : "border border-transparent text-white hover:border-white hover:bg-white hover:text-black"}`}
-                  href={item.href}
-                >
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`group flex items-center gap-3 transition-colors ${active ? "text-white" : "text-text-muted hover:text-white"}`}
+              >
+                <span
+                  className={`h-2 w-2 rounded-full ${active ? "bg-white" : "border border-[#444] group-hover:border-white"}`}
+                />
+                <span className="text-sm font-medium">
                   {item.label}
-                  {"key" in item && item.key === "friends" && pendingRequests > 0
-                    ? ` [new:${pendingRequests}]`
-                    : ""}
-                </Link>
-              </li>
+                  {"key" in item && item.key === "friends" && pendingRequests > 0 ? ` (${pendingRequests})` : ""}
+                </span>
+              </Link>
             );
           })}
-        </ul>
-      </nav>
+        </nav>
+      </div>
+
+      <div className="flex items-center gap-3 border-t border-border pt-6">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-border-hover bg-surface text-[10px] font-bold text-white">
+          K1
+        </div>
+        <div className="flex-1 overflow-hidden">
+          <p className="truncate text-xs font-semibold text-white">session active</p>
+          <p className="truncate text-[10px] text-text-darker">encrypted relay online</p>
+        </div>
+      </div>
     </aside>
   );
 }

@@ -19,14 +19,18 @@ export default function LoginPage() {
   }, [router]);
 
   return (
-    <main className="flex min-h-screen items-center justify-center px-6 py-10">
-      <div className="w-full max-w-[420px] space-y-8">
-        <div className="space-y-3">
-          <h1 className="text-[22px] font-medium leading-none">KeyOne</h1>
-          <p className="text-[15px] leading-relaxed text-[#cccccc]">end-to-end encrypted messaging</p>
+    <main className="flex min-h-screen items-center justify-center bg-background p-6 text-text">
+      <div className="animate-in fade-in zoom-in-95 flex w-full max-w-sm flex-col items-center text-center duration-500">
+        <div className="mb-8 flex h-16 w-16 items-center justify-center border border-border bg-surface shadow-2xl">
+          <span className="font-mono text-lg text-white">K1</span>
         </div>
+
+        <h1 className="mb-2 font-serif text-3xl italic tracking-tight text-white">KeyOne</h1>
+        <p className="mb-12 text-[10px] font-semibold uppercase tracking-[0.2em] text-text-muted">Secure Communications</p>
+
         <Button
-          className="w-full border-white"
+          fullWidth
+          className="h-12"
           onClick={() =>
             supabase.auth.signInWithOAuth({
               provider: "google",
@@ -36,8 +40,10 @@ export default function LoginPage() {
             })
           }
         >
-          continue with google
+          Authenticate Session
         </Button>
+
+        <p className="mt-8 max-w-[260px] text-[11px] uppercase text-text-muted/60">Zero-trust verification enforced.</p>
       </div>
     </main>
   );

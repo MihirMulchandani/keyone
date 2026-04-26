@@ -44,22 +44,26 @@ export function KeyNotFoundOverlay({ userId }: { userId: string }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black p-6">
-      <div className="page w-full max-w-[560px]">
-        <p className="text-[20px] font-medium leading-snug">no private key found.</p>
-        <p className="text-[15px] leading-relaxed text-[#cccccc]">
-          Your private key is stored on this device only.
-          <br />
-          It was not found in this browser.
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background p-6">
+      <div className="animate-in fade-in slide-in-from-bottom-4 w-full max-w-[420px] rounded-2xl border border-border bg-surface p-6 shadow-2xl duration-500">
+        <div className="mb-4 flex items-center gap-3">
+          <div className="h-3 w-3 rounded-full bg-danger" />
+          <h3 className="text-xs font-bold uppercase tracking-tighter text-white">Security Warning</h3>
+        </div>
+
+        <p className="mb-6 text-[11px] leading-relaxed text-text-muted">
+          No private key found in local storage. Messages cannot be decrypted. Please provide your master key file to continue.
         </p>
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <Button className="w-full sm:w-auto" onClick={() => fileRef.current?.click()} loading={loading}>
-            import key file
+
+        <div className="flex flex-col gap-2">
+          <Button fullWidth onClick={() => fileRef.current?.click()} loading={loading}>
+            Import Key File
           </Button>
-          <Button className="w-full border-white sm:w-auto" onClick={onGenerate} loading={loading}>
-            generate new key pair
+          <Button fullWidth variant="secondary" onClick={onGenerate} loading={loading}>
+            Generate New Pair
           </Button>
         </div>
+
         <input
           ref={fileRef}
           type="file"
@@ -70,10 +74,13 @@ export function KeyNotFoundOverlay({ userId }: { userId: string }) {
             if (file) void onImport(file);
           }}
         />
-        <p className="border border-[#444444] p-5 text-[15px] leading-relaxed">
-          Generating a new key pair will lock you out of all existing messages.
-        </p>
-        {error ? <p className="text-[15px] leading-relaxed">{error}</p> : null}
+
+        <div className="mt-6 flex gap-3 border-t border-border pt-4">
+          <p className="text-[10px] font-bold uppercase leading-relaxed text-danger/90">
+            Generating a new pair permanently locks existing messages.
+          </p>
+        </div>
+        {error ? <p className="mt-3 text-sm leading-relaxed text-text">{error}</p> : null}
       </div>
     </div>
   );
