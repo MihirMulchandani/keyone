@@ -108,50 +108,6 @@ The application is designed to work across screen sizes:
 
 ---
 
-## Local Development
-
-Clone the repository:
-
-```bash
-git clone https://github.com/your-username/keyone.git
-cd keyone
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Run the development server:
-
-```bash
-npm run dev
-```
-
----
-
-## Environment Configuration
-
-Create a `.env.local` file and add:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
-Ensure that Supabase authentication and database policies are correctly configured.
-
----
-
-## Notes
-
-* Do not expose environment variables publicly
-* Configure row-level security (RLS) properly in Supabase
-* Verify authentication redirect URLs in both Supabase and Google OAuth
-
----
-
 ## Future Work
 
 * UI consistency improvements
@@ -163,6 +119,5 @@ Ensure that Supabase authentication and database policies are correctly configur
 
 ## Author
 
-Mihir Mulchandani
-
+Mihir Mulchandani & Rakshati Vaghela
 For collaboration or opportunities, feel free to reach out.
