@@ -78,28 +78,22 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }, [userId]);
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="flex min-h-screen flex-col md:flex-row">
+    <div className="min-h-screen bg-background text-text">
+      <div className="flex min-h-screen bg-background text-text">
         <Sidebar pendingRequests={pendingRequests} />
 
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-20 border-b border-[#444444] bg-black px-6 py-4 md:hidden">
-            <div className="flex items-center justify-between">
-              <span className="text-[15px] font-medium leading-none text-white">KeyOne</span>
-              {pendingRequests > 0 ? (
-                <span className="text-[13px] leading-none text-[#cccccc]">friends [new:{pendingRequests}]</span>
-              ) : null}
+        <main className="flex h-screen min-w-0 flex-1 flex-col overflow-y-auto pb-20 md:pb-0">
+          <header className="sticky top-0 z-10 flex h-20 items-center justify-between border-b border-border bg-background/50 px-6 backdrop-blur-md md:hidden">
+            <div>
+              <h2 className="text-lg font-semibold text-white capitalize">secure workspace</h2>
+              <p className="text-[10px] uppercase tracking-wider text-text-muted">Zero-Knowledge verified</p>
             </div>
+            {pendingRequests > 0 ? <span className="text-xs text-text-muted">requests: {pendingRequests}</span> : null}
           </header>
 
-          <main className="min-h-0 flex-1 px-6 py-8 pb-24 md:px-8 md:py-8 md:pb-8">
-            <div className="w-full max-w-[860px]">{children}</div>
-          </main>
-
-          <div className="md:hidden">
-            <MobileNav pendingRequests={pendingRequests} />
-          </div>
-        </div>
+          {children}
+          <MobileNav pendingRequests={pendingRequests} />
+        </main>
       </div>
 
       {showMissingKey && userId ? <KeyNotFoundOverlay userId={userId} /> : null}

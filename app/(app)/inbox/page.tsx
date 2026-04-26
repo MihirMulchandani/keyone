@@ -81,19 +81,21 @@ export default function InboxPage() {
 
   if (opened) {
     return (
-      <div className="page">
-        <h1 className="page-title">message</h1>
-        <div className="section">
-          <p className="font-mono text-[15px] leading-relaxed">FROM: {opened.sender_id}</p>
-          <p className="font-mono text-[15px] leading-relaxed">MODE: {opened.delete_mode}</p>
-          <div className="border-y border-[#444444] py-6 font-mono text-[15px] leading-relaxed whitespace-pre-wrap">
-            {decrypted}
+      <div className="animate-in fade-in flex h-full flex-col duration-300">
+        <header className="sticky top-0 z-10 flex h-20 items-center justify-between border-b border-border bg-background/50 px-8 backdrop-blur-md">
+          <div>
+            <h2 className="text-lg font-semibold capitalize text-white">Message</h2>
+            <p className="text-[10px] uppercase tracking-wider text-text-muted">Secure view</p>
           </div>
-          {countdown !== null ? <p className="small muted">deletes in {countdown}s</p> : null}
-          <p className="text-[15px] leading-relaxed">
-            This message will self-destruct when you leave this view.
-          </p>
-          <button className="text-left text-[15px] underline" onClick={() => void destroyMessage(opened, "manual")}>
+        </header>
+
+        <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col space-y-4 overflow-y-auto p-6">
+          <p className="font-mono text-sm leading-relaxed">FROM: {opened.sender_id}</p>
+          <p className="font-mono text-sm leading-relaxed">MODE: {opened.delete_mode}</p>
+          <div className="whitespace-pre-wrap border-y border-border py-6 font-mono text-sm leading-relaxed">{decrypted}</div>
+          {countdown !== null ? <p className="text-xs text-text-muted">deletes in {countdown}s</p> : null}
+          <p className="text-sm leading-relaxed text-text">This message will self-destruct when you leave this view.</p>
+          <button className="text-left text-sm underline" onClick={() => void destroyMessage(opened, "manual")}>
             destroy now
           </button>
         </div>
@@ -102,34 +104,56 @@ export default function InboxPage() {
   }
 
   return (
-    <div className="page">
-      <h1 className="page-title">inbox</h1>
-      {rows.length === 0 ? <p className="muted py-2 text-[15px]">no messages.</p> : null}
-      {rows.map((message) => (
-        <button
-          key={message.id}
-          className="row"
-          onClick={async () => {
-            try {
-              const plaintext = await decryptMessage(message);
-              setOpened(message);
-              setDecrypted(plaintext);
-              await supabase.from("messages").update({ is_opened: true, opened_at: new Date().toISOString() }).eq("id", message.id);
-              if (userId) await trackEvent(userId, "message_opened", { message_id: message.id });
-            } catch (err) {
-              if (err instanceof DecryptionError) {
-                setError(
-                  "unable to decrypt this message.\n\nThis message may have been encrypted with a different key,\nor your key may have changed since it was sent.",
-                );
-              } else setError("unable to decrypt this message.");
-            }
-          }}
-        >
-          <span className="font-mono text-[15px]">{message.sender_id.slice(0, 8)}</span>
-          <span className="small muted">{new Date(message.created_at).toLocaleTimeString()}</span>
-        </button>
-      ))}
-      {error ? <pre className="whitespace-pre-wrap text-[15px] leading-relaxed">{error}</pre> : null}
+    <div className="animate-in fade-in flex h-full flex-col duration-300">
+      <header className="sticky top-0 z-10 flex h-20 items-center justify-between border-b border-border bg-background/50 px-8 backdrop-blur-md">
+        <div>
+          <h2 className="text-lg font-semibold capitalize text-white">Encrypted Inbox</h2>
+          <p className="text-[10px] uppercase tracking-wider text-text-muted">Zero-Knowledge verified</p>
+        </div>
+      </header>
+
+      <div className="w-full flex-1 overflow-y-auto">
+        {rows.length === 0 ? (
+          <div className="flex h-full flex-col items-center justify-center bg-surface-alt p-8 text-center">
+            <h3 className="mb-2 text-lg font-medium text-white">no messages.</h3>
+            <p className="max-w-xs text-sm text-text-muted">Your encrypted inbox is empty. Start a secure conversation.</p>
+          </div>
+        ) : (
+          <div className="flex flex-col">
+            {rows.map((message) => (
+              <button
+                key={message.id}
+                className="cursor-pointer border-b border-border p-6 text-left transition-colors hover:bg-surface-hover"
+                onClick={async () => {
+                  try {
+                    const plaintext = await decryptMessage(message);
+                    setOpened(message);
+                    setDecrypted(plaintext);
+                    await supabase.from("messages").update({ is_opened: true, opened_at: new Date().toISOString() }).eq("id", message.id);
+                    if (userId) await trackEvent(userId, "message_opened", { message_id: message.id });
+                  } catch (err) {
+                    if (err instanceof DecryptionError) {
+                      setError(
+                        "unable to decrypt this message.\n\nThis message may have been encrypted with a different key,\nor your key may have changed since it was sent.",
+                      );
+                    } else setError("unable to decrypt this message.");
+                  }
+                }}
+              >
+                <div className="mb-1 flex items-start justify-between">
+                  <span className="flex items-center gap-2 text-sm font-bold text-white">
+                    {!message.is_opened ? <span className="h-1.5 w-1.5 rounded-full bg-white" /> : null}
+                    {message.sender_id.slice(0, 8)}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-wider text-text-darker">{new Date(message.created_at).toLocaleTimeString()}</span>
+                </div>
+                <p className="text-xs text-text-muted">Encrypted payload...</p>
+              </button>
+            ))}
+          </div>
+        )}
+        {error ? <pre className="whitespace-pre-wrap p-6 text-sm leading-relaxed text-text">{error}</pre> : null}
+      </div>
     </div>
   );
 }

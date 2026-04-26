@@ -65,18 +65,29 @@ export default function OnboardingPage() {
 
   if (step === 1) {
     return (
-      <div className="page">
-        <h1 className="page-title">onboarding</h1>
-        <div className="section">
-          <div className="section-title">username</div>
-          <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="username" />
-          <p className="small muted">
-            {checking ? "checking username..." : usernameAvailable === false ? "username is taken." : ""}
+      <div className="flex min-h-screen items-center justify-center bg-background p-6">
+        <div className="animate-in fade-in slide-in-from-bottom-4 w-full max-w-[320px] border border-border bg-surface p-6 shadow-2xl duration-500">
+          <div className="mb-6 flex items-center gap-3">
+            <h3 className="text-xs font-bold uppercase tracking-tighter text-white">Identity Setup</h3>
+          </div>
+
+          <p className="mb-6 text-[11px] leading-relaxed text-text-muted">
+            Provide a public handle. This will be broadcasted to the discovery network.
           </p>
-          <Button className="w-full sm:w-auto" onClick={start}>
-            continue
-          </Button>
-          {error ? <p className="text-[15px] leading-relaxed">{error}</p> : null}
+
+          <div className="space-y-4">
+            <div className="relative">
+              <span className="absolute top-3.5 left-4 font-mono text-sm text-text-muted">@</span>
+              <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="username" className="pl-9 font-mono" />
+            </div>
+            <p className="text-xs text-text-muted">
+              {checking ? "checking username..." : usernameAvailable === false ? "username is taken." : ""}
+            </p>
+            <Button fullWidth className="rounded-none" onClick={start}>
+              Initialize Session
+            </Button>
+            {error ? <p className="text-sm leading-relaxed text-text">{error}</p> : null}
+          </div>
         </div>
       </div>
     );
@@ -84,11 +95,10 @@ export default function OnboardingPage() {
 
   if (step === 2) {
     return (
-      <div className="page">
-        <h1 className="page-title">onboarding</h1>
-        <div className="flex items-center gap-4">
-          <span className="spinner" />
-          <p className="text-[15px] leading-relaxed">generating your key pair...</p>
+      <div className="flex min-h-screen items-center justify-center bg-background p-6">
+        <div className="w-full max-w-[320px] border border-border bg-surface p-6 text-center shadow-2xl">
+          <div className="mx-auto mb-4 spinner" />
+          <p className="text-sm leading-relaxed text-text">generating your key pair...</p>
         </div>
       </div>
     );
@@ -96,13 +106,13 @@ export default function OnboardingPage() {
 
   if (step === 3) {
     return (
-      <div className="page">
-        <h1 className="page-title">key backup</h1>
-        <div className="section">
-          <p className="border border-[#444444] p-5 text-[15px] leading-relaxed">
+      <div className="flex min-h-screen items-center justify-center bg-background p-6">
+        <div className="w-full max-w-[420px] space-y-4 border border-border bg-surface p-6 shadow-2xl">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-white">key backup</h3>
+          <p className="border border-border p-5 text-sm leading-relaxed text-text">
             Anyone with this file can read all your messages. Store it offline. Do not share it.
           </p>
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <Button
               className="w-full sm:w-auto"
               onClick={async () => {
@@ -115,7 +125,7 @@ export default function OnboardingPage() {
             >
               export backup key
             </Button>
-            <button className="text-left text-[15px] text-[#cccccc] underline" onClick={() => setStep(4)}>
+            <button className="text-left text-sm text-text-muted underline" onClick={() => setStep(4)}>
               skip (not recommended)
             </button>
           </div>

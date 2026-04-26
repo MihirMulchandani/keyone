@@ -40,52 +40,100 @@ export default function FriendsPage() {
   const friends = rows.filter((row) => row.status === "accepted");
 
   return (
-    <div className="page">
-      <h1 className="page-title">friends</h1>
+    <div className="animate-in fade-in flex h-full flex-col duration-300">
+      <header className="sticky top-0 z-10 flex h-20 items-center justify-between border-b border-border bg-background/50 px-8 backdrop-blur-md">
+        <div>
+          <h2 className="text-lg font-semibold capitalize text-white">Contacts</h2>
+          <p className="text-[10px] uppercase tracking-wider text-text-muted">Encrypted Directory</p>
+        </div>
+      </header>
 
-      <div className="section">
-        <div className="section-title">requests</div>
-        {requests.length === 0 ? <p className="muted text-[15px]">no requests.</p> : null}
-        {requests.map((row) => (
-          <div key={row.id} className="row">
-            <span className="text-[15px]">{row.requester?.username ?? row.requester_id}</span>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Button
-                onClick={async () => {
-                  await supabase.from("friends").update({ status: "accepted" }).eq("id", row.id);
-                  await load(userId);
-                }}
-              >
-                accept
-              </Button>
-              <Button
-                onClick={async () => {
-                  await supabase.from("friends").update({ status: "rejected" }).eq("id", row.id);
-                  await load(userId);
-                }}
-              >
-                reject
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
+      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col space-y-12 overflow-y-auto p-6">
+        <section>
+          <h2 className="mb-4 ml-1 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-text-muted/80">
+            Friend Requests
+            {requests.length > 0 ? <span className="rounded-full bg-surface px-2 py-0.5 text-[9px] text-white">{requests.length}</span> : null}
+          </h2>
 
-      <div className="section">
-        <div className="section-title">friends</div>
-        {friends.length === 0 ? <p className="muted text-[15px]">no friends.</p> : null}
-        {friends.map((row) => {
-          const username =
-            row.requester_id === userId ? row.addressee?.username ?? row.addressee_id : row.requester?.username ?? row.requester_id;
-          return (
-            <div key={row.id} className="row">
-              <span className="text-[15px]">{username}</span>
-              <Link className="text-[15px] underline" href="/compose">
-                message
-              </Link>
+          {requests.length === 0 ? (
+            <div className="flex flex-col items-center justify-center border border-dashed border-border bg-surface-alt p-8 text-center">
+              <p className="text-sm text-text-muted">no requests.</p>
             </div>
-          );
-        })}
+          ) : (
+            <div className="flex flex-col border border-border">
+              {requests.map((row) => (
+                <div key={row.id} className="flex items-center justify-between border-b border-border bg-surface p-4 last:border-b-0">
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-10 w-10 items-center justify-center border border-border bg-background text-xs font-bold text-white">
+                      {(row.requester?.username ?? row.requester_id).slice(0, 2).toUpperCase()}
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-white">{row.requester?.username ?? row.requester_id}</div>
+                      <div className="font-mono text-xs text-text-muted">wants to connect</div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-10 w-10 rounded-none border border-transparent p-0 hover:border-border"
+                      onClick={async () => {
+                        await supabase.from("friends").update({ status: "rejected" }).eq("id", row.id);
+                        await load(userId);
+                      }}
+                    >
+                      x
+                    </Button>
+                    <Button
+                      size="icon"
+                      className="h-10 w-10 rounded-none border border-transparent p-0 hover:border-border"
+                      onClick={async () => {
+                        await supabase.from("friends").update({ status: "accepted" }).eq("id", row.id);
+                        await load(userId);
+                      }}
+                    >
+                      ✓
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section>
+          <h2 className="mb-4 ml-1 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-text-muted/80">
+            Verified Contacts
+            {friends.length > 0 ? <span className="rounded-full bg-surface px-2 py-0.5 text-[9px] text-white">{friends.length}</span> : null}
+          </h2>
+
+          {friends.length === 0 ? (
+            <div className="flex flex-col items-center justify-center border border-dashed border-border bg-surface-alt p-8 text-center">
+              <p className="text-sm text-text-muted">no friends.</p>
+            </div>
+          ) : (
+            <div className="flex flex-col border border-border">
+              {friends.map((row) => {
+                const username =
+                  row.requester_id === userId ? row.addressee?.username ?? row.addressee_id : row.requester?.username ?? row.requester_id;
+                return (
+                  <div key={row.id} className="flex items-center border-b border-border bg-background p-4 transition-colors last:border-b-0 hover:bg-surface">
+                    <div className="mr-4 flex h-10 w-10 items-center justify-center border border-border bg-surface text-xs font-bold text-white">
+                      {username.slice(0, 2).toUpperCase()}
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-sm font-semibold text-white">{username}</div>
+                      <div className="mt-0.5 font-mono text-[10px] uppercase text-text-darker">ID: {row.id.slice(0, 4)}...{row.id.slice(-4)}</div>
+                    </div>
+                    <Link className="text-xs text-text-muted underline hover:text-white" href="/compose">
+                      message
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );
