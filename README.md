@@ -1,5 +1,10 @@
 # KeyOne
 
+---
+
+<img width="1919" height="953" alt="Screenshot from 2026-04-26 23-49-16" src="https://github.com/user-attachments/assets/906c88ab-9715-4e2c-a9a9-33da8e17369a" />
+
+
 KeyOne is a minimal, privacy-focused messaging application designed to keep communication simple, readable, and controlled. The application prioritizes clarity in both user experience and system design, avoiding unnecessary complexity in interface and interaction.
 
 ---
@@ -30,6 +35,11 @@ The goal is to provide a usable and focused environment without visual noise or 
 * Google OAuth-based authentication
 * Secure session handling via Supabase
 
+
+<img width="1919" height="953" alt="Screenshot from 2026-04-26 23-49-33" src="https://github.com/user-attachments/assets/1fd12f54-8439-48bc-8d9c-fc48d6f5b888" />
+
+
+
 ### Messaging
 
 * Send messages to selected users
@@ -44,6 +54,10 @@ The goal is to provide a usable and focused environment without visual noise or 
 * View received messages
 * Clean and readable message list
 * Realtime updates using Supabase
+
+<img width="1919" height="953" alt="Screenshot from 2026-04-26 23-49-44" src="https://github.com/user-attachments/assets/473a3d78-a529-4547-a9a8-7bebc99a39d3" />
+
+
 
 ### Friends System
 
